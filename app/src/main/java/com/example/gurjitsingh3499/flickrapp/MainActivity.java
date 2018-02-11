@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements GetRawData.OnDown
         Log.d(TAG, "onCreate: Starts m8");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         GetRawData getRawData = new GetRawData(this);
