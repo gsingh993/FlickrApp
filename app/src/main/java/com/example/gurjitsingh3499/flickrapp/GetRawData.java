@@ -50,13 +50,32 @@ class GetRawData extends AsyncTask<String, Void, String> {
 
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
+            String line;
+            while(null != (line = reader.readLine())){
+                result.append(line).append("\n");
+            }
+            mDownloadStatus = DownloadStatus.OK;
+            return result.toString();
+
         } catch(MalformedURLException e){
             Log.e(TAG, "doInBackground: Invalid URL"+ e.getMessage());
         } catch(IOException e){
             Log.e(TAG, "doInBackground: IO exception reading data" + e.getMessage());
         } catch(SecurityException e){
             Log.e(TAG, "doInBackground: Security Exception" + e.getMessage() );
+        } finally {
+            if(connection != null){
+                connection.disconnect();
+            }
+            if(reader != null){
+                try{
+                    reader.close();
+                } catch (IOException e){
+                    Log.e(TAG, "doInBackground: Error closing the stream"+ e.getMessage());
+                }
+            }
         }
+        mDownloadStatus = DownloadStatus.FAILED_OR_EMPTY;
         return null;
     }
 }
