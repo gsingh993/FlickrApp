@@ -25,6 +25,7 @@ class Photo {
     String getTitle() {
         return mTitle;
     }
+
     String getAuthor() {
         return mAuthor;
     }
