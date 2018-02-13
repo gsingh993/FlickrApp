@@ -42,14 +42,6 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
 
     private String createUri(String searchCriteria, String lang, boolean matchAll){
         Log.d(TAG, "createUri: starts");
-        Uri uri = Uri.parse(mBaseURL);
-        Uri.Builder builder = uri.buildUpon();
-        builder = builder.appendQueryParameter("tags", searchCriteria)
-                .appendQueryParameter("tagmode", matchAll ? "ALL": "ANY")
-                .appendQueryParameter("lang", lang)
-                .appendQueryParameter("format", "json")
-                .appendQueryParameter("nojsoncallback", "1");
-        uri = builder.build();
         return Uri.parse(mBaseURL).buildUpon()
                 .appendQueryParameter("tags", searchCriteria)
                 .appendQueryParameter("tagmode", matchAll ? "ALL": "ANY")
