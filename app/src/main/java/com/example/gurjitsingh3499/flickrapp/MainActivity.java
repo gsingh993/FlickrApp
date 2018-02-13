@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements GetRawData.OnDownloadComplete {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements GetFlickrJsonData.OnDataAvailable {
     private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,10 +19,19 @@ public class MainActivity extends AppCompatActivity implements GetRawData.OnDown
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        GetRawData getRawData = new GetRawData(this);
-        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1");
+//        GetRawData getRawData = new GetRawData(this);
+//        getRawData.execute("https://api.flickr.com/services/feeds/photos_public.gne?format=json&nojsoncallback=1");
 
         Log.d(TAG, "onCreate: Ends m8");
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "onResume: starts");
+        super.onResume();
+        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", "en-us", true);
+        getFlickrJsonData.executeOnSameThread("bruce, wayne");
+        Log.d(TAG, "onResume: ends");
     }
 
     @Override
@@ -46,7 +57,9 @@ public class MainActivity extends AppCompatActivity implements GetRawData.OnDown
         return super.onOptionsItemSelected(item);
     }
 
-    public void onDownloadComplete(String data, DownloadStatus status){
+
+    @Override
+    public void onDataAvailable(List<Photo> data, DownloadStatus status) {
         if(status == DownloadStatus.OK){
             Log.d(TAG, "onDownloadComplete: data is "+data);
         }else{
