@@ -29,7 +29,9 @@ public class MainActivity extends AppCompatActivity implements GetFlickrJsonData
     protected void onResume() {
         Log.d(TAG, "onResume: starts");
         super.onResume();
-        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this, "https://api.flickr.com/services/feeds/photos_public.gne", "en-us", true);
+        GetFlickrJsonData getFlickrJsonData = new GetFlickrJsonData(this,
+                "https://api.flickr.com/services/feeds/photos_public.gne",
+                "en-us", true);
         getFlickrJsonData.executeOnSameThread("bruce, wayne");
         Log.d(TAG, "onResume: ends");
     }

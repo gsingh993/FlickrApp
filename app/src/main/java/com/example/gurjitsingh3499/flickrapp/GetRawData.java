@@ -19,23 +19,22 @@ class GetRawData extends AsyncTask<String, Void, String> {
     private DownloadStatus mDownloadStatus;
     private final OnDownloadComplete mCallback;
 
-    interface OnDownloadComplete{
+    interface OnDownloadComplete {
         void onDownloadComplete(String data, DownloadStatus status);
     }
 
     public GetRawData(OnDownloadComplete callback) {
         this.mDownloadStatus = DownloadStatus.IDLE;
-        mCallback = callback; 
+        mCallback = callback;
     }
 
     @Override
     protected void onPostExecute(String s) {
-        Log.d(TAG, "onPostExecute: parameter = "+s);
-        if(mCallback != null){
+        Log.d(TAG, "onPostExecute: parameter = " + s);
+        if(mCallback != null) {
             mCallback.onDownloadComplete(s, mDownloadStatus);
         }
-        Log.d(TAG, "onPostExecute: end");
-
+        Log.d(TAG, "onPostExecute: ends");
     }
 
     @Override
@@ -47,45 +46,50 @@ class GetRawData extends AsyncTask<String, Void, String> {
             mDownloadStatus = DownloadStatus.NOT_INITIALIZED;
             return null;
         }
-        try{
+
+        try {
             mDownloadStatus = DownloadStatus.PROCESSING;
             URL url = new URL(strings[0]);
 
-            connection = (HttpURLConnection)url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
             int response = connection.getResponseCode();
-            Log.d(TAG, "doInBackground: the response"+response);
+            Log.d(TAG, "doInBackground: The response code was " + response);
 
             StringBuilder result = new StringBuilder();
 
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 
-            String line;
-            while(null != (line = reader.readLine())){
+//            String line;
+//            while(null != (line = reader.readLine())) {
+            for(String line = reader.readLine(); line != null; line = reader.readLine()) {
                 result.append(line).append("\n");
             }
+
             mDownloadStatus = DownloadStatus.OK;
             return result.toString();
 
-        } catch(MalformedURLException e){
-            Log.e(TAG, "doInBackground: Invalid URL"+ e.getMessage());
-        } catch(IOException e){
-            Log.e(TAG, "doInBackground: IO exception reading data" + e.getMessage());
-        } catch(SecurityException e){
-            Log.e(TAG, "doInBackground: Security Exception" + e.getMessage() );
+
+        } catch(MalformedURLException e) {
+            Log.e(TAG, "doInBackground: Invalid URL " + e.getMessage() );
+        } catch(IOException e) {
+            Log.e(TAG, "doInBackground: IO Exception reading data: " + e.getMessage() );
+        } catch(SecurityException e) {
+            Log.e(TAG, "doInBackground: Security Exception. Needs permission? " + e.getMessage());
         } finally {
-            if(connection != null){
+            if(connection != null) {
                 connection.disconnect();
             }
-            if(reader != null){
-                try{
+            if(reader != null) {
+                try {
                     reader.close();
-                } catch (IOException e){
-                    Log.e(TAG, "doInBackground: Error closing the stream"+ e.getMessage());
+                } catch(IOException e) {
+                    Log.e(TAG, "doInBackground: Error closing stream " + e.getMessage() );
                 }
             }
         }
+
         mDownloadStatus = DownloadStatus.FAILED_OR_EMPTY;
         return null;
     }

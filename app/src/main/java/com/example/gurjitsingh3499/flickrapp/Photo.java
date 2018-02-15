@@ -14,12 +14,12 @@ class Photo {
     private String mImage;
 
     public Photo(String title, String author, String authorId, String link, String tags, String image) {
-        this.mTitle = mTitle;
-        this.mAuthor = mAuthor;
-        this.mAuthorId = mAuthorId;
-        this.mLink = mLink;
-        this.mTags = mTags;
-        this.mImage = mImage;
+        this.mTitle = title;
+        this.mAuthor = author;
+        this.mAuthorId = authorId;
+        this.mLink = link;
+        this.mTags = tags;
+        this.mImage = image;
     }
 
     String getTitle() {
