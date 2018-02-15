@@ -48,7 +48,12 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements 
 
     @Override
     protected void onPostExecute(List<Photo> photos) {
-        super.onPostExecute(photos);
+        Log.d(TAG, "onPostExecute: starts");
+
+        if (mCallBack != null) {
+            mCallBack.onDataAvailable(mPhotoList, DownloadStatus.OK);
+        }
+        Log.d(TAG, "onPostExecute: ends");
     }
 
     @Override
@@ -57,7 +62,7 @@ class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements 
         String destinationUrl = createUri(params[0], mLanguage, mMatchAll);
 
         GetRawData getRawData = new GetRawData(this);
-        getRawData.execute(destinationUrl);
+        getRawData.runInSameThread(destinationUrl);
         Log.d(TAG, "doInBackground: ends");
         return null;
     }
