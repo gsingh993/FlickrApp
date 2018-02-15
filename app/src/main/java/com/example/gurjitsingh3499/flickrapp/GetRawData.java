@@ -37,7 +37,7 @@ class GetRawData extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        Log.d(TAG, "onPostExecute: parameter = " + s);
+//        Log.d(TAG, "onPostExecute: parameter = " + s);
         if(mCallback != null) {
             mCallback.onDownloadComplete(s, mDownloadStatus);
         }
