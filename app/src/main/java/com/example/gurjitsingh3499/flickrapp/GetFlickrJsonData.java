@@ -1,6 +1,7 @@
 package com.example.gurjitsingh3499.flickrapp;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -14,7 +15,7 @@ import java.util.List;
  * Created by gurjitsingh on 2/13/18.
  */
 
-class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
+class GetFlickrJsonData extends AsyncTask<String, Void, List<Photo>> implements GetRawData.OnDownloadComplete {
     private static final String TAG = "GetFlickrJsonData";
 
     private List<Photo> mPhotoList = null;
@@ -43,6 +44,22 @@ class GetFlickrJsonData implements GetRawData.OnDownloadComplete {
         GetRawData getRawData = new GetRawData(this);
         getRawData.execute(destinationUri);
         Log.d(TAG, "executeOnSameThread ends");
+    }
+
+    @Override
+    protected void onPostExecute(List<Photo> photos) {
+        super.onPostExecute(photos);
+    }
+
+    @Override
+    protected List<Photo> doInBackground(String... params) {
+        Log.d(TAG, "doInBackground: Starts");
+        String destinationUrl = createUri(params[0], mLanguage, mMatchAll);
+
+        GetRawData getRawData = new GetRawData(this);
+        getRawData.execute(destinationUrl);
+        Log.d(TAG, "doInBackground: ends");
+        return null;
     }
 
     private String createUri(String searchCriteria, String lang, boolean matchAll) {
