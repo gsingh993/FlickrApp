@@ -71,7 +71,7 @@ class FlickrRecyclerViewAdapter extends RecyclerView.Adapter<FlickrRecyclerViewA
             super(itemView);
             Log.d(TAG, "FlickrImageViewHolder: starts");
             this.thumbnail = (ImageView) itemView.findViewById(R.id.thumbNail);
-            this.title = (TextView) itemView.findViewById(R.id.title);
+            this.title = itemView.findViewById(R.id.title);
         }
     }
 }
